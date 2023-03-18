@@ -1,4 +1,5 @@
-import * as React from "react";
+import { useState } from "react";
+import axios from "axios"
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -34,13 +35,19 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    try {
+     const res= await axios.post("http://localhost:3001/auth/login", {
+        username,
+        password,
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -72,7 +79,9 @@ export default function SignIn() {
               required
               fullWidth
               id="username"
-              label="Userame"
+              label="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               name="username"
               autoComplete="username"
               autoFocus
@@ -83,6 +92,8 @@ export default function SignIn() {
               fullWidth
               name="password"
               label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               type="password"
               id="password"
               autoComplete="current-password"
@@ -92,6 +103,7 @@ export default function SignIn() {
               label="Remember me"
             />
             <Button
+            onClick={handleSubmit}
               type="submit"
               fullWidth
               variant="contained"
