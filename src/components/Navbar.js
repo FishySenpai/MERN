@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useCookies } from "react-cookie";
+import { useNavigate, Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -19,7 +21,14 @@ const settings = ["Profile", "Account", "Dashboard", "Logout"];
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const navigate = useNavigate();
+  const [cookies, setCookies] = useCookies("access_token")
 
+  const LogOut = ()=>{
+    setCookies("access_token", "");
+    window.localStorage.removeItem("userID");
+    navigate("/")
+  }
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -147,11 +156,15 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              {!cookies.access_token ? (
+                <Button textalign="center" sx={{ p: "5px", textDecoration: "none" }}>
+                  <Link to="/login">Login</Link>
+                </Button>
+              ) : (
+                <Button onClick={LogOut} textalign="center" sx={{ p: "5px" }}>
+                  Log Out
+                </Button>
+              )}
             </Menu>
           </Box>
         </Toolbar>

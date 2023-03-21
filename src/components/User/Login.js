@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useCookies} from "react-cookie"
 import axios from "axios"
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -37,6 +38,7 @@ const theme = createTheme();
 export default function SignIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [_, setCookie] = useCookies("access_token")
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -44,6 +46,9 @@ export default function SignIn() {
         username,
         password,
       });
+      setCookie("access_token", res.data.token)
+      window.localStorage.setItem("userID", res.data.userID)
+      window.location.pathname="/";
       console.log(res);
     } catch (err) {
       console.log(err);
