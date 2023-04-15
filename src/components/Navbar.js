@@ -15,7 +15,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = ["Products", "Add Products"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
@@ -123,15 +123,8 @@ function ResponsiveAppBar() {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Link to="/">Products</Link>
+            <Link to="/">Add Products</Link>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -157,7 +150,10 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {!cookies.access_token ? (
-                <Button textalign="center" sx={{ p: "5px", textDecoration: "none" }}>
+                <Button
+                  textalign="center"
+                  sx={{ p: "5px", textDecoration: "none" }}
+                >
                   <Link to="/login">Login</Link>
                 </Button>
               ) : (
